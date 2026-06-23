@@ -130,10 +130,30 @@
   .pill.mid{background:rgba(255,176,46,.16);color:#ffcf7a}
   td.b{color:var(--green)}
 
+  /* ===== TIMELINE + GALLERY LAYOUT ===== */
+  .tl-layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,1fr);gap:28px;align-items:start}
+  .tl-gallery{position:sticky;top:78px;display:flex;flex-direction:column;gap:14px}
+  .tl-gallery-head{margin-bottom:2px}
+  .tl-gallery-title{font-size:18px;font-weight:800;color:#fff;margin-top:4px}
+  .tl-gallery-sub{font-size:12.5px;color:var(--ink-soft);margin-top:3px}
+  @media(max-width:920px){
+    .tl-layout{grid-template-columns:1fr}
+    .tl-gallery{position:static}
+  }
+
   /* ===== GALLERY ===== */
   .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
-  .gcard{position:relative;border-radius:16px;overflow:hidden;height:240px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .gcard{position:relative;border-radius:16px;overflow:hidden;height:240px;border:1px solid var(--line);box-shadow:var(--shadow);cursor:zoom-in}
   .gcard img{width:100%;height:100%;object-fit:cover;transition:.5s}
+  /* lightbox */
+  .lightbox{position:fixed;inset:0;z-index:999;background:rgba(4,9,16,.92);backdrop-filter:blur(4px);
+    display:none;align-items:center;justify-content:center;padding:30px;cursor:zoom-out}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:92vw;max-height:88vh;border-radius:12px;box-shadow:0 30px 80px rgba(0,0,0,.6);
+    border:1px solid rgba(255,255,255,.12)}
+  .lb-close{position:fixed;top:20px;right:30px;font-size:40px;line-height:1;color:#fff;cursor:pointer;
+    opacity:.8;transition:.2s;font-weight:300}
+  .lb-close:hover{opacity:1;transform:scale(1.1)}
   .gcard:hover img{transform:scale(1.07)}
   .gcard .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;
     background:linear-gradient(transparent,rgba(8,17,28,.9))}
@@ -241,11 +261,10 @@
   <div class="wrap">
     <span class="logo"><i>◆</i> NZ v4</span>
     <a href="#timeline">行程图</a>
-    <a href="#scenery">风景</a>
-    <a href="#packing">打包清单</a>
-    <a href="#risk">风险 & 备选</a>
+    <a href="#risk">风险分析</a>
     <a href="#matrix">风险矩阵</a>
     <a href="#assign">团队分工</a>
+    <a href="#packing">打包清单</a>
   </div>
 </nav>
 
@@ -265,42 +284,45 @@
       <span><i class="chip out" style="padding:2px 8px">户外</i> 高强度户外</span>
     </div>
 
-    <div class="timeline" id="tl"></div>
+    <div class="tl-layout">
+      <div class="timeline" id="tl"></div>
+
+      <aside class="tl-gallery">
+        <div class="tl-gallery-head">
+          <div class="kicker">Landscapes</div>
+          <div class="tl-gallery-title">路上的风景</div>
+          <div class="tl-gallery-sub">点击图片可放大查看</div>
+        </div>
+        <div class="gcard" data-full="images/tekapo-night.png">
+          <img src="images/tekapo-night.png" alt="特卡波星空">
+          <div class="cap"><b>特卡波 · 暗夜星空保护区</b><small>10/1–10/2 Mt John 观星，夜间可至 -2°C</small></div>
+        </div>
+        <div class="gcard" data-full="images/queenstown.png">
+          <img src="images/queenstown.png" alt="皇后镇">
+          <div class="cap"><b>皇后镇 · 瓦卡蒂普湖</b><small>9/25–9/28 群峰环湖 + Dart 快艇</small></div>
+        </div>
+        <div class="gcard" data-full="images/mtcook.png">
+          <img src="images/mtcook.png" alt="库克山">
+          <div class="cap"><b>库克山 · Hooker Valley</b><small>10/2 冰川 / 直升机 / 步道</small></div>
+        </div>
+        <div class="gcard" data-full="images/tekapo-day.png">
+          <img src="images/tekapo-day.png" alt="特卡波白天">
+          <div class="cap"><b>特卡波湖 · 好牧羊人教堂</b><small>南岛春日湖光雪山</small></div>
+        </div>
+        <div class="gcard" data-full="images/waitomo.png">
+          <img src="images/waitomo.png" alt="怀托摩">
+          <div class="cap"><b>北岛 · 怀托摩绿野</b><small>10/4 Lost World 速降 + 萤火虫洞</small></div>
+        </div>
+      </aside>
+    </div>
   </div>
 </section>
 
-<!-- SCENERY -->
-<section id="scenery">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">Landscapes</div>
-      <h2>路上的新西兰风景</h2>
-      <p>从特卡波的湖光雪山，到皇后镇的群峰环湖，再到库克山冰川与北岛的萤火虫绿野——这就是大家要奔赴的画面。</p>
-    </div>
-    <div class="gallery">
-      <div class="gcard tall">
-        <img src="images/tekapo-night.png" alt="特卡波星空">
-        <div class="cap"><b>特卡波 · 暗夜星空保护区</b><small>10/1–10/2 Mt John 观星，夜间可至 -2°C</small></div>
-      </div>
-      <div class="gcard">
-        <img src="images/queenstown.png" alt="皇后镇">
-        <div class="cap"><b>皇后镇 · 瓦卡蒂普湖</b><small>9/25–9/28 群峰环湖 + Dart 快艇</small></div>
-      </div>
-      <div class="gcard">
-        <img src="images/mtcook.png" alt="库克山">
-        <div class="cap"><b>库克山 · Hooker Valley</b><small>10/2 冰川 / 直升机 / 步道</small></div>
-      </div>
-      <div class="gcard">
-        <img src="images/tekapo-day.png" alt="特卡波白天">
-        <div class="cap"><b>特卡波湖 · 好牧羊人教堂</b><small>南岛春日湖光雪山</small></div>
-      </div>
-      <div class="gcard">
-        <img src="images/waitomo.png" alt="怀托摩">
-        <div class="cap"><b>北岛 · 怀托摩绿野</b><small>10/4 Lost World 速降 + 萤火虫洞</small></div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <span class="lb-close" id="lbClose">&times;</span>
+  <img id="lbImg" src="" alt="">
+</div>
 
 <!-- PACKING -->
 <section id="packing">
@@ -487,6 +509,25 @@ matrix.forEach(m=>{
   const pill = m[2]==='high'?'<span class="pill high">🔴 高</span>':'<span class="pill mid">🟡 中</span>';
   mb.insertAdjacentHTML('beforeend',`<tr><td>${m[0]}</td><td>${m[1]}</td><td>${pill}</td><td>${m[3]}</td><td class="b">${m[4]}</td></tr>`);
 });
+
+/* ---------- 风景图灯箱（点击放大） ---------- */
+(function(){
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbClose = document.getElementById('lbClose');
+  document.querySelectorAll('.tl-gallery .gcard').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const full = card.getAttribute('data-full') || card.querySelector('img').src;
+      lbImg.src = full;
+      lb.classList.add('open');
+      lb.setAttribute('aria-hidden','false');
+    });
+  });
+  function closeLb(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }
+  lb.addEventListener('click',e=>{ if(e.target===lb||e.target===lbClose) closeLb(); });
+  lbClose.addEventListener('click',closeLb);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLb(); });
+})();
 
 /* ---------- 打包清单 ---------- */
 const packing = [
