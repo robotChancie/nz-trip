@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>新西兰 6 人行程 v4 · 策划作战图</title>
+<style>
+  :root{
+    --bg:#0b1622;
+    --bg2:#0f1f30;
+    --card:#13263a;
+    --card2:#16304a;
+    --line:#23415e;
+    --ink:#eaf2fb;
+    --ink-soft:#9fb6cd;
+    --teal:#37c6c0;
+    --teal-d:#1f8f8b;
+    --sky:#4aa8ff;
+    --amber:#ffb02e;
+    --red:#ff5a6e;
+    --green:#3fd07e;
+    --purple:#9a86ff;
+    --shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    background:linear-gradient(180deg,#08111c,#0b1622 30%,#0b1622);
+    color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+  /* ===== HERO ===== */
+  .hero{
+    position:relative;min-height:88vh;display:flex;align-items:flex-end;
+    background:
+      linear-gradient(180deg,rgba(8,17,28,.25),rgba(8,17,28,.55) 55%,#0b1622),
+      url('images/tekapo-day.png') center/cover no-repeat;
+  }
+  .hero .wrap{padding-bottom:54px;width:100%}
+  .badge{
+    display:inline-flex;gap:8px;align-items:center;background:rgba(55,198,192,.15);
+    border:1px solid rgba(55,198,192,.45);color:var(--teal);font-size:13px;
+    padding:6px 14px;border-radius:999px;font-weight:600;letter-spacing:.5px;
+  }
+  .hero h1{font-size:clamp(30px,5.5vw,58px);line-height:1.12;margin:16px 0 10px;font-weight:800;letter-spacing:-.5px}
+  .hero h1 span{background:linear-gradient(90deg,#37c6c0,#4aa8ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{font-size:clamp(15px,2vw,19px);color:var(--ink-soft);max-width:680px}
+  .hero-stats{display:flex;flex-wrap:wrap;gap:14px;margin-top:26px}
+  .stat{background:rgba(19,38,58,.7);backdrop-filter:blur(8px);border:1px solid var(--line);
+    border-radius:14px;padding:14px 18px;min-width:120px}
+  .stat b{display:block;font-size:24px;color:#fff}
+  .stat small{color:var(--ink-soft);font-size:12.5px}
+
+  /* ===== NAV ===== */
+  .nav{position:sticky;top:0;z-index:50;background:rgba(11,22,34,.82);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line)}
+  .nav .wrap{display:flex;gap:6px;flex-wrap:wrap;padding:10px 20px;align-items:center}
+  .nav a{color:var(--ink-soft);text-decoration:none;font-size:14px;font-weight:600;
+    padding:8px 13px;border-radius:9px;transition:.2s;white-space:nowrap}
+  .nav a:hover{color:#fff;background:var(--card2)}
+  .nav .logo{font-weight:800;color:#fff;margin-right:auto;font-size:15px}
+  .nav .logo i{color:var(--teal)}
+
+  section{padding:64px 0 24px}
+  .sec-head{margin-bottom:30px}
+  .sec-head .kicker{color:var(--teal);font-weight:700;font-size:13px;letter-spacing:2px;text-transform:uppercase}
+  .sec-head h2{font-size:clamp(24px,3.6vw,36px);font-weight:800;margin:6px 0 8px}
+  .sec-head p{color:var(--ink-soft);max-width:760px}
+
+  /* ===== TIMELINE ===== */
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:22px;font-size:13px;color:var(--ink-soft)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+  .timeline{position:relative;padding-left:30px}
+  .timeline::before{content:"";position:absolute;left:9px;top:6px;bottom:6px;width:2px;
+    background:linear-gradient(180deg,var(--teal),var(--sky),var(--purple))}
+  .t-item{position:relative;margin-bottom:16px}
+  .t-item::before{content:"";position:absolute;left:-26px;top:22px;width:14px;height:14px;
+    border-radius:50%;background:var(--teal);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--teal)}
+  .t-item.region-north::before{background:var(--green);box-shadow:0 0 0 2px var(--green)}
+  .t-item.region-air::before{background:var(--sky);box-shadow:0 0 0 2px var(--sky)}
+  .t-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;
+    box-shadow:var(--shadow);transition:.2s}
+  .t-card:hover{border-color:var(--teal-d);transform:translateX(3px)}
+  .t-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+  .t-date{font-weight:800;font-size:16px;color:#fff}
+  .t-loc{font-size:12.5px;color:var(--teal);background:rgba(55,198,192,.12);
+    padding:3px 10px;border-radius:999px;border:1px solid rgba(55,198,192,.3)}
+  .t-loc.north{color:var(--green);background:rgba(63,208,126,.12);border-color:rgba(63,208,126,.3)}
+  .t-loc.air{color:var(--sky);background:rgba(74,168,255,.12);border-color:rgba(74,168,255,.3)}
+  .t-act{color:var(--ink);font-size:14.5px}
+  .t-tags{margin-top:9px;display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-size:11.5px;padding:3px 9px;border-radius:7px;font-weight:600;border:1px solid transparent}
+  .chip.r{background:rgba(255,90,110,.13);color:#ff8d9a;border-color:rgba(255,90,110,.3)}
+  .chip.w{background:rgba(255,176,46,.13);color:#ffcf7a;border-color:rgba(255,176,46,.3)}
+  .chip.out{background:rgba(154,134,255,.13);color:#c2b5ff;border-color:rgba(154,134,255,.3)}
+
+  /* ===== RISK ===== */
+  .risk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+  .risk{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .risk .bar{height:5px}
+  .risk.high .bar{background:var(--red)}
+  .risk.mid .bar{background:var(--amber)}
+  .risk .body{padding:16px 18px;flex:1;display:flex;flex-direction:column}
+  .risk .rh{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:6px}
+  .risk h3{font-size:16px;font-weight:800}
+  .lvl{font-size:11.5px;font-weight:800;padding:3px 10px;border-radius:999px;white-space:nowrap}
+  .lvl.high{background:rgba(255,90,110,.16);color:#ff8d9a;border:1px solid rgba(255,90,110,.4)}
+  .lvl.mid{background:rgba(255,176,46,.16);color:#ffcf7a;border:1px solid rgba(255,176,46,.4)}
+  .risk .when{font-size:12px;color:var(--ink-soft);margin-bottom:10px}
+  .risk .desc{font-size:13.5px;color:#cdddf0;margin-bottom:12px}
+  .plan{margin-top:auto;background:var(--bg2);border:1px solid var(--line);border-radius:11px;padding:11px 13px}
+  .plan .pt{font-size:12px;font-weight:800;color:var(--green);letter-spacing:.5px;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+  .plan ul{list-style:none;font-size:13px;color:#d8e6f4}
+  .plan li{padding-left:16px;position:relative;margin:4px 0}
+  .plan li::before{content:"→";position:absolute;left:0;color:var(--teal)}
+
+  /* ===== MATRIX ===== */
+  .matrix-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+  table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:720px}
+  th,td{padding:11px 14px;text-align:left;border-bottom:1px solid var(--line)}
+  th{background:var(--card2);color:#fff;font-weight:700;font-size:12.5px;letter-spacing:.5px;position:sticky;top:0}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:rgba(74,168,255,.05)}
+  .pill{font-size:11px;font-weight:800;padding:2px 9px;border-radius:999px}
+  .pill.high{background:rgba(255,90,110,.16);color:#ff8d9a}
+  .pill.mid{background:rgba(255,176,46,.16);color:#ffcf7a}
+  td.b{color:var(--green)}
+
+  /* ===== GALLERY ===== */
+  .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+  .gcard{position:relative;border-radius:16px;overflow:hidden;height:240px;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .gcard img{width:100%;height:100%;object-fit:cover;transition:.5s}
+  .gcard:hover img{transform:scale(1.07)}
+  .gcard .cap{position:absolute;left:0;right:0;bottom:0;padding:16px;
+    background:linear-gradient(transparent,rgba(8,17,28,.9))}
+  .gcard .cap b{display:block;font-size:16px}
+  .gcard .cap small{color:var(--ink-soft)}
+  .gcard.tall{height:496px;grid-row:span 2}
+
+  /* ===== PACKING ===== */
+  .pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .pcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .pcard h3{font-size:16px;font-weight:800;display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .pcard h3 .pi{font-size:19px}
+  .pcard .ptag{font-size:11.5px;color:var(--ink-soft);margin-bottom:12px}
+  .pcard ul{list-style:none}
+  .pcard li{font-size:13px;color:#d8e6f4;padding:7px 0;border-top:1px dashed var(--line);display:flex;gap:9px;align-items:flex-start;cursor:pointer;line-height:1.45}
+  .pcard li:first-of-type{border-top:none}
+  .pcard li .box{flex:0 0 16px;width:16px;height:16px;margin-top:2px;border:1.5px solid var(--teal);border-radius:5px;display:grid;place-items:center;font-size:11px;color:#08111c;transition:.15s}
+  .pcard li.done .box{background:var(--teal)}
+  .pcard li.done .box::after{content:"✓"}
+  .pcard li.done .txt{color:var(--ink-soft);text-decoration:line-through}
+  .pcard li .txt b{color:#fff;font-weight:700}
+  .pcard.warn{border-color:rgba(255,90,90,.3)}
+  .pcard.warn li .box{border-color:#ff8a8a}
+  .pcard.warn li.done .box{background:#ff6a6a}
+  .pcard .neg{font-size:12.5px;color:#ffb0b0;padding:6px 0;border-top:1px dashed var(--line)}
+  .pcard .neg:first-of-type{border-top:none}
+  .must{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-top:12px}
+  .mitem{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 15px;display:flex;gap:11px;align-items:center}
+  .mitem .num{flex:0 0 28px;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-weight:800;font-size:14px;background:rgba(255,176,46,.16);color:var(--amber)}
+  .mitem b{font-size:13.5px;color:#fff;display:block}
+  .mitem small{font-size:11.5px;color:var(--ink-soft)}
+
+  /* ===== ASSIGN ===== */
+  .assign-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+  .acard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
+  .acard .ah{display:flex;align-items:center;gap:11px;margin-bottom:13px}
+  .ava{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:20px;
+    background:var(--card2);border:1px solid var(--line)}
+  .acard h3{font-size:16px;font-weight:800}
+  .acard .role{font-size:12px;color:var(--teal)}
+  .acard ul{list-style:none}
+  .acard li{font-size:13.5px;color:#d8e6f4;padding:6px 0 6px 24px;position:relative;border-top:1px dashed var(--line)}
+  .acard li:first-child{border-top:none}
+  .acard li::before{content:"";position:absolute;left:4px;top:13px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+  /* squad layout */
+  .squad-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:18px}
+  .squad{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:var(--shadow)}
+  .squad-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+  .squad-head .flag{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:22px;background:var(--card2);border:1px solid var(--line)}
+  .squad-head h3{font-size:19px;font-weight:800}
+  .squad-head .sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
+  .squad.sh .squad-head .flag{background:rgba(46,212,191,.12);border-color:rgba(46,212,191,.4)}
+  .squad.sz .squad-head .flag{background:rgba(120,170,255,.12);border-color:rgba(120,170,255,.4)}
+  .duty{background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:12px}
+  .duty:last-child{margin-bottom:0}
+  .duty-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .duty-name{display:flex;align-items:center;gap:8px;font-size:15px;font-weight:800}
+  .duty-name .di{font-size:17px}
+  .owner{font-size:12.5px;font-weight:800;color:#08111c;background:var(--teal);padding:4px 11px;border-radius:999px;white-space:nowrap}
+  .squad.sz .owner{background:#78aaff}
+  .duty ul{list-style:none}
+  .duty li{font-size:12.8px;color:#cfe0f0;padding:5px 0 5px 20px;position:relative;border-top:1px dashed var(--line)}
+  .duty li:first-child{border-top:none}
+  .duty li::before{content:"";position:absolute;left:3px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
+  .squad.sz .duty li::before{background:#78aaff}
+  .note{background:rgba(255,176,46,.08);border:1px solid rgba(255,176,46,.3);border-radius:12px;
+    padding:14px 16px;font-size:13.5px;color:#ffe0ad;margin-top:18px}
+  .note b{color:var(--amber)}
+
+  /* shared item card */
+  .share{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin-top:14px}
+  .sitem{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:13px 15px}
+  .sitem b{font-size:14px;color:#fff;display:block}
+  .sitem small{color:var(--ink-soft);font-size:12.5px}
+  .sitem .who{margin-top:6px;font-size:12px;color:var(--teal);font-weight:700}
+
+  footer{padding:40px 0;text-align:center;color:var(--ink-soft);font-size:13px;border-top:1px solid var(--line);margin-top:40px}
+
+  @media(max-width:600px){
+    .gcard.tall{height:240px;grid-row:span 1}
+    .hero{min-height:78vh}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● 2026.09.25 – 10.07 · 13天12晚 · 6人团</span>
+    <h1>新西兰 <span>南北岛</span> 行程 v4<br>策划作战图</h1>
+    <p>一张图看清行程脉络、天气风险与备选方案，方便策划把每个人的任务一键分下去。南岛初春多变 + 户外密集 + 包车自驾 + 多次转场。</p>
+    <div class="hero-stats">
+      <div class="stat"><b>13</b><small>天 / 12 晚</small></div>
+      <div class="stat"><b>6</b><small>人团队</small></div>
+      <div class="stat"><b>11</b><small>个风险点</small></div>
+      <div class="stat"><b>3</b><small>高风险 🔴</small></div>
+      <div class="stat"><b>100%</b><small>有备选方案</small></div>
+    </div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="wrap">
+    <span class="logo"><i>◆</i> NZ v4</span>
+    <a href="#timeline">行程图</a>
+    <a href="#scenery">风景</a>
+    <a href="#packing">打包清单</a>
+    <a href="#risk">风险 & 备选</a>
+    <a href="#matrix">风险矩阵</a>
+    <a href="#assign">团队分工</a>
+  </div>
+</nav>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Itinerary</div>
+      <h2>清晰行程图</h2>
+      <p>3+3+2 住宿节奏（皇后镇 → 瓦纳卡 → 特卡波 → 怀托摩 → 奥克兰/怀赫科），刻意把转场日做减法。下方标签即时提示当天的风险与户外强度。</p>
+    </div>
+    <div class="legend">
+      <span><i class="dot" style="background:var(--teal)"></i>南岛</span>
+      <span><i class="dot" style="background:var(--green)"></i>北岛</span>
+      <span><i class="dot" style="background:var(--sky)"></i>转场 / 飞行</span>
+      <span><i class="chip r" style="padding:2px 8px">风险</i> 天气/路况风险</span>
+      <span><i class="chip out" style="padding:2px 8px">户外</i> 高强度户外</span>
+    </div>
+
+    <div class="timeline" id="tl"></div>
+  </div>
+</section>
+
+<!-- SCENERY -->
+<section id="scenery">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Landscapes</div>
+      <h2>路上的新西兰风景</h2>
+      <p>从特卡波的湖光雪山，到皇后镇的群峰环湖，再到库克山冰川与北岛的萤火虫绿野——这就是大家要奔赴的画面。</p>
+    </div>
+    <div class="gallery">
+      <div class="gcard tall">
+        <img src="images/tekapo-night.png" alt="特卡波星空">
+        <div class="cap"><b>特卡波 · 暗夜星空保护区</b><small>10/1–10/2 Mt John 观星，夜间可至 -2°C</small></div>
+      </div>
+      <div class="gcard">
+        <img src="images/queenstown.png" alt="皇后镇">
+        <div class="cap"><b>皇后镇 · 瓦卡蒂普湖</b><small>9/25–9/28 群峰环湖 + Dart 快艇</small></div>
+      </div>
+      <div class="gcard">
+        <img src="images/mtcook.png" alt="库克山">
+        <div class="cap"><b>库克山 · Hooker Valley</b><small>10/2 冰川 / 直升机 / 步道</small></div>
+      </div>
+      <div class="gcard">
+        <img src="images/tekapo-day.png" alt="特卡波白天">
+        <div class="cap"><b>特卡波湖 · 好牧羊人教堂</b><small>南岛春日湖光雪山</small></div>
+      </div>
+      <div class="gcard">
+        <img src="images/waitomo.png" alt="怀托摩">
+        <div class="cap"><b>北岛 · 怀托摩绿野</b><small>10/4 Lost World 速降 + 萤火虫洞</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PACKING -->
+<section id="packing">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Packing List</div>
+      <h2>完整打包清单</h2>
+      <p>南岛初春按「分层穿衣」（排汗 + 保暖 + 防风防雨）准备；户外以登山鞋 + 背包为核心；<b style="color:var(--amber)">生物安检务必把鞋刷干净、食品如实申报</b>。可勾选下方清单实时核对。</p>
+    </div>
+
+    <div class="note" style="margin-bottom:18px">🧳 <b>行李策略</b>：每人 1 个中大型托运箱（24–28 寸）+ 1 个登山背包 / 双肩包（25–35L）作随身。快艇 / 步道 / 速降都要轻装上阵，行李箱进不了山。<b>国内段（AKL→ZQN、CHC→Hamilton）行李额度务必单独确认</b>，超重费很贵。</div>
+
+    <div class="pack-grid" id="packGrid"></div>
+
+    <div class="note" style="border-color:rgba(255,90,90,.35);background:rgba(255,90,90,.08);color:#ffc9c9;margin-top:20px">
+      ⚠️ <b style="color:var(--red)">生物安检红线（9/25 入境必看）</b>：新西兰生物安检全球最严，违禁品当场最高罚 NZD400，9/25 国际转国内还要再过一次。
+      <b>绝对不能带</b>：任何新鲜 / 干制食品（水果、肉类、蜂蜜、坚果、中药材、肉松、火腿）、植物种子 / 木制品 / 藤草制品、<b>没洗干净的登山鞋</b>、用过的露营装备。
+      <b>可带但要申报</b>：密封商业包装零食、药品（带处方）。入境卡有申报栏就如实勾选——宁可申报被查，也别瞒报。
+    </div>
+
+    <h3 style="margin:28px 0 6px;font-size:18px">⭐ 最容易忘但很关键的 8 样</h3>
+    <div class="must" id="mustGrid"></div>
+  </div>
+</section>
+
+<!-- RISK -->
+<section id="risk">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Risk & Backup</div>
+      <h2>一眼看清：现在有哪些风险？备选方案是什么？</h2>
+      <p>11 个风险点 · 其中 <b style="color:var(--red)">3 个高风险 🔴</b> · <b style="color:var(--amber)">8 个中风险 🟡</b>。每张卡片下方绿色框就是对应的<strong>备选方案 / Plan B</strong>。</p>
+    </div>
+    <div class="risk-grid" id="riskGrid"></div>
+  </div>
+</section>
+
+<!-- MATRIX -->
+<section id="matrix">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Matrix</div>
+      <h2>风险总览矩阵</h2>
+      <p>按日期排列，一张表对照「风险 → 行程已有 B 计划 → 额外建议」。</p>
+    </div>
+    <div class="matrix-wrap">
+      <table>
+        <thead><tr><th>日期</th><th>风险项</th><th>等级</th><th>已有 B 计划</th><th>额外建议</th></tr></thead>
+        <tbody id="matrixBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ASSIGN -->
+<section id="assign">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Team Tasks</div>
+      <h2>团队分工面板（策划用）</h2>
+      <p>两支分队各管一摊：每个负责人对应「住宿 / 包车 / 游玩」一类职责，卡片里就是 TA 要落地的待办。</p>
+    </div>
+    <div class="squad-grid" id="squadGrid"></div>
+
+    <div class="note">⏰ <b>当务之急（截至 6/23 还有 3 个月）</b>：学校春假（9/26–10/11）与行程几乎完全重叠，南岛大型度假屋、10 座包车、酒庄午餐会被本地家庭抢光。<b>特卡波住宿（全镇极少）必须最先锁定</b>，价格预期比淡季高 10–20%。</div>
+
+    <h3 style="margin:28px 0 4px;font-size:18px">🎒 全队共享物资（分人带即可）</h3>
+    <p style="color:var(--ink-soft);font-size:13.5px">避免重复携带，减轻每人负担：</p>
+    <div class="share" id="shareGrid"></div>
+  </div>
+</section>
+
+<footer>
+  新西兰 6 人行程 v4 · 由「打包清单 + 风险评估报告」整合生成 · 评估日期 2026.06.23<br>
+  核心提示：转场日做纯减法 · 每个天气依赖项目都备好 Plan B · 提前预订是当务之急
+</footer>
+
+<script>
+/* ---------- 行程时间线（依据两份文档中的日期/活动重建） ---------- */
+const timeline = [
+  {date:"9/25 周四", region:"air", loc:"抵达 · AKL→ZQN", act:"早到组 10:00 落地奥克兰，转国内航班飞皇后镇；晚到组 16:00 落地，赶 19:20 航班（偏紧）。入境过最严生物安检。", tags:[{t:"衔接偏紧",c:"r"},{t:"生物安检",c:"w"}]},
+  {date:"9/26 周五", region:"south", loc:"皇后镇 · Glenorchy", act:"Dart River 喷射快艇（建议 11:00/13:00 场，给晚到组留缓冲）。", tags:[{t:"快艇可能停运",c:"r"},{t:"户外",c:"out"}]},
+  {date:"9/27 周日", region:"south", loc:"中奥塔哥 · 酒庄", act:"放松日：Gibbston / Bannockburn 酒庄午餐。凌晨 2:00 夏令时拨快 1 小时。", tags:[{t:"夏令时切换",c:"w"}]},
+  {date:"9/28 周一", region:"air", loc:"转场 · 皇后镇→瓦纳卡", act:"翻越 Crown Range（海拔1076m）或经 Cromwell 绕行；建议上午纯转场。", tags:[{t:"山口可能封路",c:"r"}]},
+  {date:"9/29 周二", region:"south", loc:"瓦纳卡", act:"瓦纳卡湖、#ThatWanakaTree、Puzzling World 等轻松游。", tags:[]},
+  {date:"9/30 周三", region:"south", loc:"瓦纳卡 · 自由日", act:"可选 Rob Roy 冰川步道（仅天气+状态好才去），否则 Diamond Lake / Mt Iron。", tags:[{t:"砾石/涉水路",c:"r"},{t:"户外",c:"out"}]},
+  {date:"10/1 周四", region:"south", loc:"转场 · 特卡波", act:"前往特卡波（连住2晚）；晚间 Mt John 观星（约 -2°C）。", tags:[{t:"观星看天",c:"r"},{t:"户外",c:"out"}]},
+  {date:"10/2 周五", region:"south", loc:"库克山 · 特卡波", act:"Hooker Valley 步道 + 直升机/冰川船 + 傍晚 Tekapo Springs 温泉。", tags:[{t:"直升机易取消",c:"r"},{t:"户外",c:"out"}]},
+  {date:"10/3 周六", region:"air", loc:"转场 · CHC→Hamilton→怀托摩", act:"6:30 离特卡波 → 3h 到基督城 → 飞汉密尔顿 → 车到怀托摩。全程 8–10h，纯转场。", tags:[{t:"转场强度高",c:"r"}]},
+  {date:"10/4 周日", region:"north", loc:"怀托摩", act:"Lost World 100m 速降探洞（8:00 集合）；不参加者走萤火虫洞 / Ruakuri。", tags:[{t:"体力/胆量门槛",c:"r"},{t:"户外",c:"out"}]},
+  {date:"10/5 周一", region:"north", loc:"奥克兰 · 怀赫科岛", act:"渡轮上岛酒庄午餐（周一需提前锁定营业酒庄）。", tags:[{t:"周一营业不确定",c:"w"}]},
+  {date:"10/6 周二", region:"north", loc:"奥克兰", act:"奥克兰市区 / 自由活动，整理行李。", tags:[]},
+  {date:"10/7 周三", region:"air", loc:"返程", act:"奥克兰出发返程回国。", tags:[]},
+];
+
+const tl = document.getElementById('tl');
+timeline.forEach(d=>{
+  const locClass = d.region==='north'?'north':d.region==='air'?'air':'';
+  const tags = d.tags.map(t=>`<span class="chip ${t.c}">${t.t}</span>`).join('');
+  tl.insertAdjacentHTML('beforeend',`
+    <div class="t-item region-${d.region}">
+      <div class="t-card">
+        <div class="t-top">
+          <span class="t-date">${d.date}</span>
+          <span class="t-loc ${locClass}">${d.loc}</span>
+        </div>
+        <div class="t-act">${d.act}</div>
+        ${tags?`<div class="t-tags">${tags}</div>`:''}
+      </div>
+    </div>`);
+});
+
+/* ---------- 风险 + 备选方案 ---------- */
+const risks = [
+  {lvl:"high",title:"Dart River 快艇取消",when:"9/26",
+   desc:"快艇对水位、风力敏感，春季暴雨涨水会停运。取消后若只剩森林徒步，一天会很空。",
+   plan:["预订选可改期条款（官方提前24h免费改期）","与 9/27 酒庄日弹性互换补一趟","备选 Glenorchy 电影取景自驾 / Skyline 缆车+Luge 提前到 9/26 下午"]},
+  {lvl:"high",title:"皇冠山口结冰封路",when:"9/28 转场瓦纳卡",
+   desc:"Crown Range Road 海拔 1076m，初春常因结冰/积雪关闭；2025/9/30 曾大规模降雪封路。",
+   plan:["司机前一晚查 NZTA Journey Planner 实时路况","两条路都有风险则走 SH6 经 Cromwell（海拔低，多30分钟更安全）","缆车提前到 9/26 或 9/27，9/28 上午纯转场","确认包车配防滑链"]},
+  {lvl:"high",title:"库克山直升机取消",when:"10/2",
+   desc:"直升机对风力要求极高，春秋季取消率 40–50%；冰川船大风时也会停。",
+   plan:["三层 Plan B：直升机 → Glacier Explorers 冰川船 → Hooker Valley 步道","早上先做步道（上午天气更好），中午再试飞行项目","选 The Helicopter Line / Glacier Southern Lakes（免费改期退款）","Tekapo Springs 温泉作全天兜底"]},
+  {lvl:"mid",title:"特卡波观星取消",when:"10/1 晚",
+   desc:"Mt John 观星需晴朗无云，春季取消率 30–40%；连住2晚有2次机会。",
+   plan:["10/1 与 10/2 两晚都预订，哪晚天气好去哪晚（免费退款）","兜底：Dark Sky Project 室内虚拟观星","户外1.5–2h，必带羽绒服+帽子+手套（冲锋衣扛不住 -2°C）"]},
+  {lvl:"mid",title:"Rob Roy 步道 / 涉水路",when:"9/30 自由日",
+   desc:"最后30km 砾石路 + 10km 涉水浅滩，暴雨后24h 内可能无法通行；步道上部完全暴露大风。",
+   plan:["要去就确认 4WD 车型，出发前查 wanakaapp.nz 路况","推荐改 Diamond Lake / Mt Iron（铺装路、路况好）","出发前查 doc.govt.nz 看步道关闭/雪崩通告"]},
+  {lvl:"mid",title:"夏令时切换少睡 1 小时",when:"9/27 凌晨",
+   desc:"9/27 02:00 拨快至 03:00。安排在酒庄放松日，影响最小，但仍要提醒。",
+   plan:["手机自动调，手表/闹钟/厨房钟手动调","酒庄日 10:30–11:00 再出发，别太早","提醒包车司机知道时间已切换"]},
+  {lvl:"mid",title:"怀赫科岛周一营业",when:"10/5",
+   desc:"部分酒庄周一不营业或只开午市；渡轮周一班次正常（每30–60min一班）。",
+   plan:["提前1个月锁定2家周一营业酒庄（Mudbrick / Cable Bay）","先订午餐酒庄，再倒推渡轮班次","提前订岛上包车接驳（6人+周一班次少）","Fullers360 官网买好往返票"]},
+  {lvl:"mid",title:"学校春假撞期 · 预订竞争",when:"全程",
+   desc:"Term 3 假期 9/26–10/11 几乎完全重叠，南岛热门住宿/包车/活动极紧张，价格高10–20%。",
+   plan:["现在就订：度假屋、10座包车、酒庄午餐、Dart快艇、Lost World","优先锁定特卡波2晚住宿（全镇极少）","预算留足余量"]},
+  {lvl:"mid",title:"9/25 国际转国内衔接",when:"9/25",
+   desc:"晚到组16:00落地、19:20飞ZQN，仅3h20，国际到达→安检→取行李→重托需2–2.5h，偏紧。",
+   plan:["买票选同一联盟（新航星空联盟）行李直挂","赶不上则选 17:45 班次（贵约 NZD600 但多1.5h缓冲）","最后兜底：机场附近住一晚，次日早飞 ZQN"]},
+  {lvl:"mid",title:"10/3 转场日强度过高",when:"10/3",
+   desc:"特卡波→基督城→飞汉密尔顿→怀托摩，全程8–10h+早起，前一天又是库克山日。",
+   plan:["10/3 不安排任何额外活动，纯转场","到怀托摩后直接休息，确保早睡","CHC机场预留至少1.5h（还车+托运+安检）"]},
+  {lvl:"mid",title:"Lost World 体力 / 胆量门槛",when:"10/4",
+   desc:"沿 100m 绳索速降进洞，导游可现场体测拒绝不达标者（不退款）；有体重限制 50–120kg。",
+   plan:["提前确认6人中谁参加/谁不参加","不参加者走萤火虫洞 / Ruakuri / 轻量黑水漂","确认预订是4h版还是7h Epic版，核对体重限制"]},
+];
+
+const rg = document.getElementById('riskGrid');
+risks.forEach(r=>{
+  const lvlText = r.lvl==='high'?'🔴 高风险':'🟡 中风险';
+  rg.insertAdjacentHTML('beforeend',`
+    <div class="risk ${r.lvl}">
+      <div class="bar"></div>
+      <div class="body">
+        <div class="rh"><h3>${r.title}</h3><span class="lvl ${r.lvl}">${lvlText}</span></div>
+        <div class="when">📅 ${r.when}</div>
+        <div class="desc">${r.desc}</div>
+        <div class="plan">
+          <div class="pt">✅ 备选方案 / Plan B</div>
+          <ul>${r.plan.map(p=>`<li>${p}</li>`).join('')}</ul>
+        </div>
+      </div>
+    </div>`);
+});
+
+/* ---------- 风险矩阵 ---------- */
+const matrix = [
+  ["9/25","晚到组国内航班衔接偏紧","mid","17:45 备选航班","选同联盟直挂行李"],
+  ["9/26","Dart River 快艇天气取消","high","改森林徒步","可与 9/27 酒庄日互换"],
+  ["9/27","夏令时切换少睡1h","mid","放松日影响小","手动调钟，晚出发"],
+  ["9/28","Crown Range 结冰封路","high","走 Cromwell 绕行","前一天确认路况"],
+  ["9/30","Rob Roy 步道 / 涉水路","mid","不作默认选项","确认4WD + 查水位"],
+  ["10/1","观星天气取消","mid","连住2晚2次机会","两晚都预订"],
+  ["10/2","直升机 / 冰川船取消","high","冰川船 / 步道兜底","三层 Plan B 链"],
+  ["10/3","转场日强度过高","mid","—","纯转场不安排活动"],
+  ["10/4","Lost World 体力门槛","mid","萤火虫洞替代","提前确认参与名单"],
+  ["10/5","怀赫科周一营业","mid","已标注确认","提前锁定2家营业酒庄"],
+  ["全程","学校春假预订紧张","mid","已提示尽早订","现在就订特卡波住宿"],
+];
+const mb = document.getElementById('matrixBody');
+matrix.forEach(m=>{
+  const pill = m[2]==='high'?'<span class="pill high">🔴 高</span>':'<span class="pill mid">🟡 中</span>';
+  mb.insertAdjacentHTML('beforeend',`<tr><td>${m[0]}</td><td>${m[1]}</td><td>${pill}</td><td>${m[3]}</td><td class="b">${m[4]}</td></tr>`);
+});
+
+/* ---------- 打包清单 ---------- */
+const packing = [
+  {icon:"🧥", cat:"衣物 · 分层 + 防风防雨", tag:"南岛山区会很冷，分层是铁律",
+   items:[["<b>防水冲锋衣（硬壳）</b>×1","最重要的一件，山区风雨常态"],["<b>羽绒服 / 抓绒中层</b>×1","观星 -2°C 必穿"],["速干长袖 / 排汗内层 ×2–3","别带纯棉，湿了会冷"],["速干长裤 ×2–3","牛仔裤湿了难干"],["防水冲锋裤 / 防风裤 ×1","Rob Roy、Hooker 遇雨用"],["保暖帽 + 手套 + 围巾","观星 / 库克山 / 皇冠山口必备"],["保暖袜（羊毛优先）×3–4","湿了也保暖"],["太阳镜 + 遮阳帽","南岛紫外线极强 + 雪地反光"],["酒庄 smart casual 1 套","9/27、10/5 庄园午餐"],["睡衣 / 拖鞋 / 足量内衣","度假屋住得多，山区不易干"],["<b>泳衣</b>","Tekapo Springs 温泉 10/2 别忘"]]},
+  {icon:"🥾", cat:"鞋 + 户外项目装备", tag:"以登山鞋 + 背包为核心",
+   items:[["<b>防水登山鞋</b>×1","Hooker / Rob Roy / Lost World，提前穿熟别穿新鞋"],["舒适运动鞋 ×1","酒庄 / 市区 / 渡轮日"],["登山背包 25–35L","快艇 / 步道轻装上阵"],["水壶 + 能量零食","徒步补给（零食需密封申报）"],["Lost World：能换的干衣 + 毛巾","装备运营商提供，自带换洗"],["快艇：防风外套 + 手套","水上风大且冷"],["轻便登山杖（可选）","Rob Roy / Hooker 有帮助"]]},
+  {icon:"📄", cat:"证件 · 放随身（最重要）", tag:"没签证上不了飞机",
+   items:[["<b>护照</b>（有效期 > 6 个月）","回国前留足余量"],["<b>NZeTA 电子签</b>","提前申请，确认已批"],["机票行程单","国际往返 + 2 段国内"],["全部住宿预订确认单","11 晚 + 续住"],["全部活动预订单","快艇 / 速降 / 观星 / 渡轮 / 酒庄"],["包车确认 + 司机联系方式",""],["驾照 + 国际驾照翻译件","应急自驾"],["旅行保险单（含户外项目）","强烈建议买"]]},
+  {icon:"🔌", cat:"电子 · 网络 · 钱", tag:"NZ 用 I 型三脚扁插",
+   items:[["<b>转换插头</b>（I 型三脚扁插）×2–3","与中国 / 澳洲同款，欧美不同"],["充电宝（≤100Wh 随身）","徒步 / 长途车程"],["多口 USB 充电器","度假屋插座有限，6 人抢"],["手机 + 充电线 / 车充","包车长途导航充电"],["相机 / GoPro","快艇防水适合 GoPro"],["NZ 电话卡 / eSIM","Spark / One NZ / 2degrees"],["离线地图","下载南岛离线 Google Maps"],["信用卡 Visa / Master","几乎全程刷卡"],["少量现金 NZD $200–300/人","应急 / 小费 / 偏远区"]]},
+  {icon:"💊", cat:"药品 + 个人护理", tag:"NZ 买药需处方且贵，自带",
+   items:[["感冒 / 退烧 / 肠胃 / 止泻药",""],["<b>晕车 / 晕船药</b>","快艇 + 山路 + 渡轮都用得到"],["创可贴 / 消毒棉 / 肌肉膏药","徒步后腿酸"],["个人常备药 + 处方","带够全程量"],["<b>防晒霜 SPF50+</b>","全球最强紫外线，反复补涂"],["润唇膏 + 保湿霜","干燥 + 大风易裂"],["防蚊液","北岛森林 sandfly"],["洗漱用品 / 女性用品","度假屋不一定全配"]]},
+  {icon:"🎒", cat:"便利小物（提升体验）", tag:"提升长途与自炊体验",
+   items:[["保温水壶","NZ 自来水可直饮"],["眼罩 + 颈枕","长途飞行 + 倒时差"],["垃圾袋 / 防水袋","装快艇后的湿物品"],["折叠购物袋","超市采购自炊"],["保鲜膜 / 调料小包","度假屋自炊省钱"],["湿巾 / 纸巾 / 小药盒",""]]},
+];
+const pg = document.getElementById('packGrid');
+packing.forEach(p=>{
+  const lis = p.items.map(it=>`<li><span class="box"></span><span class="txt">${it[0]}${it[1]?` · <span style="color:var(--ink-soft)">${it[1]}</span>`:''}</span></li>`).join('');
+  pg.insertAdjacentHTML('beforeend',`
+    <div class="pcard">
+      <h3><span class="pi">${p.icon}</span>${p.cat}</h3>
+      <div class="ptag">${p.tag}</div>
+      <ul>${lis}</ul>
+    </div>`);
+});
+// 不要带（独立小卡）
+pg.insertAdjacentHTML('beforeend',`
+  <div class="pcard warn">
+    <h3><span class="pi">🚫</span>不要带 / 别犯的错</h3>
+    <div class="ptag">带了占地方还可能被安检拦</div>
+    <div class="neg">❌ 雨伞 —— NZ 风太大，伞没用，靠冲锋衣</div>
+    <div class="neg">❌ 厚重大衣 —— 占地方，不如分层</div>
+    <div class="neg">❌ 太多纯棉衣物 —— 湿了难干</div>
+    <div class="neg">❌ 任何新鲜 / 干制食品 —— 生物安检红线</div>
+    <div class="neg">❌ 没洗干净的登山鞋 —— 鞋底带泥草籽会被查</div>
+  </div>`);
+// 勾选交互
+document.querySelectorAll('.pcard li').forEach(li=>{
+  li.addEventListener('click',()=>li.classList.toggle('done'));
+});
+
+/* ---------- 最易忘 8 样 ---------- */
+const must = [
+  ["防水冲锋衣","南岛风雨标配"],["羽绒服 + 帽手套","观星 -2°C"],["泳衣","Tekapo 温泉"],
+  ["SPF50+ 防晒霜","最强紫外线"],["I 型转换插头","NZ 专用插座"],["晕车晕船药","快艇 + 山路 + 渡轮"],
+  ["刷干净的登山鞋","过生物安检"],["预订单 + NZeTA","没签证上不了机"],
+];
+const mg = document.getElementById('mustGrid');
+must.forEach((m,i)=>{
+  mg.insertAdjacentHTML('beforeend',`<div class="mitem"><div class="num">${i+1}</div><div><b>${m[0]}</b><small>${m[1]}</small></div></div>`);
+});
+
+/* ---------- 团队分工（按分队 + 职责 + 负责人） ---------- */
+const squads = [
+  {key:"sh", flag:"🧧", name:"上海分队", sub:"Shanghai Squad · 住宿 / 包车 / 游玩",
+   duties:[
+     {icon:"🏨", duty:"住宿", owner:"@小夏",
+      tasks:["最先锁定特卡波 2 晚住宿（全镇极少）","皇后镇 + 瓦纳卡 3 卧度假屋（春假抢手）","怀托摩 / 奥克兰住宿","所有预订单截图存手机 + 打印"]},
+     {icon:"🚐", duty:"包车", owner:"@憨憨",
+      tasks:["预订 10 座包车（含行李，春假紧张）","9/27 晚提醒司机查 Crown Range 路况 + 防滑链","存好包车司机联系方式","核对 4 段航班（国际往返 + 2 段国内）行李额度"]},
+     {icon:"🎟️", duty:"游玩", owner:"@小颜",
+      tasks:["Dart River 快艇（选可改期条款）","Mt John 观星（10/1 + 10/2 两晚都订）","库克山直升机 / 冰川船（选免费改期公司）","Lost World 速降（确认版本 + 体重限制 + 参与名单）"]},
+   ]},
+  {key:"sz", flag:"🌴", name:"深圳分队", sub:"Shenzhen Squad · 住宿 / 包车 / 游玩",
+   duties:[
+     {icon:"🏨", duty:"住宿", owner:"@emma",
+      tasks:["与上海分队对齐房型/床位分配","怀赫科岛 / 奥克兰住宿核对","确认入住/退房时间与转场日衔接","备份所有预订确认邮件"]},
+     {icon:"🚐", duty:"包车", owner:"@北北",
+      tasks:["怀赫科岛上包车接驳（6人 + 周一班次少）","Fullers360 渡轮往返票","CHC / Hamilton 机场用车与还车时间","车充 / USB 线 / 离线导航统筹"]},
+     {icon:"🎟️", duty:"游玩", owner:"@菜菜 + @emma",
+      tasks:["怀赫科周一营业酒庄（Mudbrick / Cable Bay 提前锁 2 家）","瓦纳卡轻松游 + Rob Roy 备选判断","Tekapo Springs 温泉 / Dark Sky 室内观星兜底","各活动参与名单 + 改期条款汇总"]},
+   ]},
+];
+const sqg = document.getElementById('squadGrid');
+squads.forEach(sq=>{
+  const duties = sq.duties.map(d=>`
+    <div class="duty">
+      <div class="duty-top">
+        <div class="duty-name"><span class="di">${d.icon}</span>${d.duty}</div>
+        <span class="owner">${d.owner}</span>
+      </div>
+      <ul>${d.tasks.map(t=>`<li>${t}</li>`).join('')}</ul>
+    </div>`).join('');
+  sqg.insertAdjacentHTML('beforeend',`
+    <div class="squad ${sq.key}">
+      <div class="squad-head">
+        <div class="flag">${sq.flag}</div>
+        <div><h3>${sq.name}</h3><div class="sub">${sq.sub}</div></div>
+      </div>
+      ${duties}
+    </div>`);
+});
+
+/* ---------- 共享物资 ---------- */
+const shared = [
+  {n:"转换插头（I型三脚扁插）",d:"3–4个全队够用",w:"2人各带2个"},
+  {n:"多口USB充电器",d:"度假屋插座有限",w:"分人带2–3个"},
+  {n:"急救包",d:"创可贴/消毒/绷带",w:"1人带1套"},
+  {n:"公用药品",d:"感冒/肠胃/晕车船",w:"1人带1套大的"},
+  {n:"调料包 / 保鲜膜",d:"度假屋自炊用",w:"1人带"},
+  {n:"车充 / USB线",d:"包车长途导航充电",w:"包车统一用"},
+  {n:"大容量充电宝",d:"徒步/长途车程",w:"分人带2–3个"},
+];
+const sg = document.getElementById('shareGrid');
+shared.forEach(s=>{
+  sg.insertAdjacentHTML('beforeend',`<div class="sitem"><b>${s.n}</b><small>${s.d}</small><div class="who">👤 ${s.w}</div></div>`);
+});
+</script>
+</body>
+</html>
