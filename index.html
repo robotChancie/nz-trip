@@ -212,6 +212,14 @@
   .squad-head .sub{font-size:12.5px;color:var(--ink-soft);margin-top:2px}
   .squad.sh .squad-head .flag{background:rgba(46,212,191,.12);border-color:rgba(46,212,191,.4)}
   .squad.sz .squad-head .flag{background:rgba(120,170,255,.12);border-color:rgba(120,170,255,.4)}
+  .squad.all .squad-head .flag{background:rgba(154,134,255,.12);border-color:rgba(154,134,255,.4)}
+  /* 状态下拉框：可点击选择，按状态变色 */
+  .dstat{font-size:10.5px;font-weight:700;border:1px solid var(--line);padding:2px 22px 2px 9px;border-radius:999px;margin-left:8px;vertical-align:middle;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-color:var(--card2);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath d='M1 3l4 4 4-4' stroke='%23888' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 7px center;transition:.2s}
+  .dstat:hover{filter:brightness(1.08)}
+  .dstat.todo{color:var(--ink-soft);background-color:var(--card2);border-color:var(--line)}
+  .dstat.doing{color:#ffc861;background-color:rgba(255,200,97,.13);border-color:rgba(255,200,97,.45)}
+  .dstat.done{color:#2ed4bf;background-color:rgba(46,212,191,.14);border-color:rgba(46,212,191,.5)}
+  .dstat option{background:#1a1f2e;color:#e8ecf4}
   .duty{background:var(--bg2);border:1px solid var(--line);border-radius:13px;padding:13px 15px;margin-bottom:12px}
   .duty:last-child{margin-bottom:0}
   .duty-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
@@ -219,11 +227,13 @@
   .duty-name .di{font-size:17px}
   .owner{font-size:12.5px;font-weight:800;color:#08111c;background:var(--teal);padding:4px 11px;border-radius:999px;white-space:nowrap}
   .squad.sz .owner{background:#78aaff}
+  .squad.all .owner{background:#9a86ff}
   .duty ul{list-style:none}
   .duty li{font-size:12.8px;color:#cfe0f0;padding:5px 0 5px 20px;position:relative;border-top:1px dashed var(--line)}
   .duty li:first-child{border-top:none}
   .duty li::before{content:"";position:absolute;left:3px;top:12px;width:6px;height:6px;border-radius:50%;background:var(--teal)}
   .squad.sz .duty li::before{background:#78aaff}
+  .squad.all .duty li::before{background:#9a86ff}
   .note{background:rgba(255,176,46,.08);border:1px solid rgba(255,176,46,.3);border-radius:12px;
     padding:14px 16px;font-size:13.5px;color:#ffe0ad;margin-top:18px}
   .note b{color:var(--amber)}
@@ -334,7 +344,7 @@
     <div class="sec-head">
       <div class="kicker">Team Tasks</div>
       <h2>团队分工面板（策划用）</h2>
-      <p>两支分队各管一摊：每个负责人对应「住宿 / 包车 / 游玩」一类职责，卡片里就是 TA 要落地的待办。</p>
+      <p>分工依据《新西兰 6 人行程计划》Excel【行程明细及分工】：按南岛 / 北岛 / 全员三组拆解，每张卡片对应负责人要落地的具体待办与当前进度。</p>
     </div>
     <div class="squad-grid" id="squadGrid"></div>
 
@@ -574,37 +584,73 @@ must.forEach((m,i)=>{
   mg.insertAdjacentHTML('beforeend',`<div class="mitem"><div class="num">${i+1}</div><div><b>${m[0]}</b><small>${m[1]}</small></div></div>`);
 });
 
-/* ---------- 团队分工（按分队 + 职责 + 负责人） ---------- */
+/* ---------- 团队分工（依据 Excel【行程明细及分工】Sheet） ---------- */
 const squads = [
-  {key:"sh", flag:"🧧", name:"上海分队", sub:"Shanghai Squad · 住宿 / 包车 / 游玩",
+  {key:"sh", flag:"🏔️", name:"南岛组", sub:"South Island · 住宿 / 包车 / 南岛游玩",
    duties:[
-     {icon:"🏨", duty:"住宿", owner:"@小夏",
-      tasks:["最先锁定特卡波 2 晚住宿（全镇极少）","皇后镇 + 瓦纳卡 3 卧度假屋（春假抢手）","怀托摩 / 奥克兰住宿","所有预订单截图存手机 + 打印"]},
-     {icon:"🚐", duty:"包车", owner:"@憨憨",
-      tasks:["预订 10 座包车（含行李，春假紧张）","9/27 晚提醒司机查 Crown Range 路况 + 防滑链","存好包车司机联系方式","核对 4 段航班（国际往返 + 2 段国内）行李额度"]},
-     {icon:"🎟️", duty:"游玩", owner:"@小颜",
-      tasks:["Dart River 快艇（选可改期条款）","Mt John 观星（10/1 + 10/2 两晚都订）","库克山直升机 / 冰川船（选免费改期公司）","Lost World 速降（确认版本 + 体重限制 + 参与名单）"]},
+     {icon:"🏨", duty:"南岛住宿", owner:"@emma", status:"进行中",
+      tasks:["皇后镇 3 卧湖景度假屋（9/25–9/27 连住 3 晚）","瓦纳卡 3 卧湖景度假屋（9/28–9/30 连住 3 晚）","特卡波近湖住宿（10/1–10/2 连住 2 晚，全镇极少需最先锁）"]},
+     {icon:"🚐", duty:"南岛包车", owner:"@北北", status:"进行中",
+      tasks:["南岛包车含司机（9/26–10/3 多日）","9/28 提醒查 Crown Range 路况 + 防滑链","存好司机联系方式"]},
+     {icon:"🎟️", duty:"皇后镇游玩", owner:"@emma", status:"进行中",
+      tasks:["9/25 Skyline 缆车看全景（可加 luge 滑车，下午 6:30 上山来得及）","9/26 Dart River 达特河荒野喷射快艇 + 森林（选可改期条款）"]},
+     {icon:"🍷", duty:"酒庄品鉴", owner:"@北北", status:"进行中",
+      tasks:["9/27 中奥塔哥酒庄品鉴（南岛红酒日 · 全员）"]},
+     {icon:"⭐", duty:"瓦纳卡 / 特卡波 / 库克山", owner:"@白菜", status:"进行中",
+      tasks:["9/29 转场瓦纳卡（纯转场）","9/30 瓦纳卡森林 / 游船（三选一）","10/1 转场特卡波 + 善牧教堂 + 观星（约 8:30–10:30 避月光）","10/2 库克山步道 + 冰川项目 + 温泉（大风概率高，备选）","10/2 Tekapo Springs 温泉 + 二次观星"]},
    ]},
-  {key:"sz", flag:"🌴", name:"深圳分队", sub:"Shenzhen Squad · 住宿 / 包车 / 游玩",
+  {key:"sz", flag:"🌋", name:"北岛组", sub:"North Island · 住宿 / 包车 / 北岛游玩",
    duties:[
-     {icon:"🏨", duty:"住宿", owner:"@emma",
-      tasks:["与上海分队对齐房型/床位分配","怀赫科岛 / 奥克兰住宿核对","确认入住/退房时间与转场日衔接","备份所有预订确认邮件"]},
-     {icon:"🚐", duty:"包车", owner:"@北北",
-      tasks:["怀赫科岛上包车接驳（6人 + 周一班次少）","Fullers360 渡轮往返票","CHC / Hamilton 机场用车与还车时间","车充 / USB 线 / 离线导航统筹"]},
-     {icon:"🎟️", duty:"游玩", owner:"@菜菜 + @emma",
-      tasks:["怀赫科周一营业酒庄（Mudbrick / Cable Bay 提前锁 2 家）","瓦纳卡轻松游 + Rob Roy 备选判断","Tekapo Springs 温泉 / Dark Sky 室内观星兜底","各活动参与名单 + 改期条款汇总"]},
+     {icon:"🏨", duty:"北岛住宿", owner:"@小夏", status:"未开始",
+      tasks:["怀托摩 / Otorohanga 乡村住宿（10/3 · 1 晚）","奥克兰市区 CBD / Viaduct（10/4–10/5 连住 2 晚）","奥克兰留守 3 人住宿（10/6 · 1 晚）"]},
+     {icon:"🚐", duty:"北岛包车", owner:"@憨憨", status:"未开始",
+      tasks:["北岛包车含司机（10/3–10/6）","CHC / Hamilton 机场用车与衔接时间"]},
+     {icon:"🎟️", duty:"北岛游玩", owner:"@小颜", status:"未开始",
+      tasks:["10/4 Lost World 失落世界速降探洞（4h 版，确认体重限制 + 参与名单）","10/4 Te Waihou 蓝泉步道","10/5 怀赫科岛酒庄 2 家 + 海景午餐（⚠️ 一起定往返渡轮，确认周一营业）","10/6 留守 3 人奥克兰市内轻松日"]},
+   ]},
+  {key:"all", flag:"🧩", name:"全员事项", sub:"Everyone · 机票 / 预算 / 行前准备",
+   duties:[
+     {icon:"✈️", duty:"机票", owner:"@全员", status:"已出票 / 进行中",
+      tasks:["国际往返机票（两批均已出票：港·新航 + 沪·东航）","9/25 国内航班① AKL→ZQN（早到组 15:00 / 晚到组 19:20，分两班）","10/3 国内航班② CHC→Hamilton（基督城→汉密尔顿）"]},
+     {icon:"💰", duty:"预算 & 行前", owner:"@全员", status:"进行中 / 未开始",
+      tasks:["总预算 & 费用分摊（人均约 NZD1500–1900，重新核价）","必提前预订项清单汇总（春假撞期，尽早订）","打包 & 衣物提醒 & 时差预调","新西兰签证（6 人全部确认有效，NZeTA / 贴签）"]},
    ]},
 ];
+/* 状态可选项：值即文案，data-st 用于配色 */
+const STATUS_OPTS = ["未开始","进行中","已完成","已出票","已预订"];
+/* 把 Excel 原始复合状态（如「已出票 / 进行中」）归一到下拉默认选项 */
+function normStatus(s){
+  if(!s) return "未开始";
+  if(s.indexOf("完成")>=0) return "已完成";
+  if(s.indexOf("出票")>=0) return "已出票";
+  if(s.indexOf("预订")>=0||s.indexOf("预定")>=0) return "已预订";
+  if(s.indexOf("进行")>=0) return "进行中";
+  return "未开始";
+}
+/* 状态 -> 配色档位 */
+function statClass(s){
+  if(s==="已完成"||s==="已出票"||s==="已预订") return "done";
+  if(s==="进行中") return "doing";
+  return "todo";
+}
 const sqg = document.getElementById('squadGrid');
+let dutyIdx = 0;
 squads.forEach(sq=>{
-  const duties = sq.duties.map(d=>`
+  const duties = sq.duties.map(d=>{
+    const id = "dstat-"+(dutyIdx++);
+    const cur = normStatus(d.status);
+    const opts = STATUS_OPTS.map(o=>`<option value="${o}"${o===cur?' selected':''}>${o}</option>`).join('');
+    return `
     <div class="duty">
       <div class="duty-top">
-        <div class="duty-name"><span class="di">${d.icon}</span>${d.duty}</div>
+        <div class="duty-name"><span class="di">${d.icon}</span>${d.duty}
+          <select class="dstat ${statClass(cur)}" id="${id}" onchange="onStatusChange(this)" onclick="event.stopPropagation()">${opts}</select>
+        </div>
         <span class="owner">${d.owner}</span>
       </div>
       <ul>${d.tasks.map(t=>`<li>${t}</li>`).join('')}</ul>
-    </div>`).join('');
+    </div>`;
+  }).join('');
   sqg.insertAdjacentHTML('beforeend',`
     <div class="squad ${sq.key}">
       <div class="squad-head">
@@ -613,6 +659,21 @@ squads.forEach(sq=>{
       </div>
       ${duties}
     </div>`);
+});
+/* 下拉切换：更新配色 + 记住选择 */
+function onStatusChange(sel){
+  sel.classList.remove('todo','doing','done');
+  sel.classList.add(statClass(sel.value));
+  try{ localStorage.setItem('nztrip_'+sel.id, sel.value); }catch(e){}
+}
+/* 还原上次手动选择的状态 */
+document.querySelectorAll('select.dstat').forEach(sel=>{
+  try{
+    const saved = localStorage.getItem('nztrip_'+sel.id);
+    if(saved && STATUS_OPTS.includes(saved)){ sel.value = saved; }
+  }catch(e){}
+  sel.classList.remove('todo','doing','done');
+  sel.classList.add(statClass(sel.value));
 });
 
 /* ---------- 共享物资 ---------- */
